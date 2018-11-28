@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Multimedia Streaming | Audio Streaming</title>
+
+  <!-- Load CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Load JS -->
+  <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+</head>
+
+<body>
+  <div class="jumbotron" style="background-color:transparent; !important">
+    <p class="display-4 text-center text-secondary"><b class="text-primary">Multimedia</b>Streaming</p>
+    <ul class="nav nav-pills justify-content-center" style="margin-top: 30px">
+      <li class="nav-item">
+        <a class="nav-link active" href="audio.html">Audio Streaming</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="video.html">Video Streaming</a>
+      </li>
+    </ul>
+  </div>
+  <main>
+    <div class="container"> 
+      <div class="card">
+        <div class="card-body justify-content-center">
+          <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+              <table>
+                <tr>
+                  <td width="50%">Stream Status</td>
+                  <td width="5%"> : </td>
+                  <td id="status"></td>
+                </tr>
+                <tr>
+                  <td>Stream Server</td>
+                  <td> : </td>
+                  <td id="serverurl"></td>
+                </tr>
+                <tr>
+                  <td>Bitrate</td>
+                  <td> : </td>
+                  <td><span id="bitrate"></span> kbps</td>
+                </tr>
+                <tr>
+                  <td>Playing Now</td>
+                  <td> : </td>
+                  <td id="songtitle"></td>
+                </tr>
+              </table>
+              <!-- shoutcast player -->
+              <audio src="http://10.151.253.69:1998/;listen.pls?sid=1" autoplay="true" controls="true" volume="5.0" style="width: 100%; margin: 30px 0 30px 0"></audio>  
+            </div>
+            <div class="col-2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 30px">
+        <div class="card-body">
+          <!-- track history -->
+          <h3 class="text-center">History</h3>
+          <ul id="track-history"></ul>
+        </div>
+      </div> 
+    </div>
+  </main>
+  <footer class="footer text-center" style="margin: 50px 0 30px 0">
+    <p class="text-secondary mb-1 small">Copyright &copy; 2018 - Multimedia Network</p>
+    <p class="text-secondary mb-1 small">Created by <a href="https://www.instagram.com/mocatfrio/">Hafara</a> | Burhan | Awan | Pius - Powered by <a href="https://www.shoutcast.com/">SHOUTcast</a> and <a href="https://obsproject.com/">Open Broadcaster Software</a></p> 
+  </footer>
+
+  <!-- Load Javascripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="assets/jquery.shoutcast.min.js"></script>
+  <script>
+    var my_host = '10.151.253.69',
+        my_port = 1998;
+
+    $.SHOUTcast({
+      host : my_host,
+      port : my_port,
+      interval : 5000,
+      stats : function(){
+        $('#songtitle').text(this.get('songtitle'));
+        $('#bitrate').text(this.get('bitrate'));
+        $('#status').text(this.get('status'));
+        $('#serverurl').text(this.get('serverurl'));
+        $('#servername').text(this.get('servertitle'));
+      }
+    }).startStats();
+
+    // Track history
+    $.SHOUTcast({
+      host : my_host,
+      port : my_port
+    }).played(function(tracks){
+      $('#track-history').html('');
+      $.each(tracks, function(k,track){
+        $('#track-history').append('<li>'+track.title+'</li>');
+      });
+    });
+
+  </script>
+</body>
+</html>
